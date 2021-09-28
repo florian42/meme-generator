@@ -1,4 +1,5 @@
 """Module Ingest specifies all Ingest classes."""
+import csv
 import os
 from abc import ABC, abstractmethod
 from typing import List
@@ -49,6 +50,28 @@ class TxtFileIngest(IngestInterface):
                 quote, author = line.strip("\n\ufeff").split(" - ")
                 quotes.append(Quote(author, quote))
         return quotes
+
+
+class CsvFileIngest(IngestInterface):
+    """Ingest a csv file."""
+
+    allowed_extensions = [".csv"]
+
+    @classmethod
+    def parse(cls, path: str) -> List[Quote]:
+        """Parse a csv file."""
+        if not cls.can_ingest(path):
+            raise FileExtensionNotAllowed(
+                (
+                    f"Can only open files of type {cls.allowed_extensions},"
+                    f"got {path}"
+                )
+            )
+        with open(path, "r") as file:
+            return [
+                Quote(row["author"], row["body"])
+                for row in csv.DictReader(file)
+            ]
 
 
 class FileExtensionNotAllowed(Exception):
