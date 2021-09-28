@@ -4,6 +4,7 @@ click==8.0.1
 flake8==3.9.2
 iniconfig==1.1.1
 isort==5.9.3
+lxml==4.6.3
 mccabe==0.6.1
 mypy==0.910
 mypy-extensions==0.4.3
@@ -17,6 +18,7 @@ pydocstyle==6.1.1
 pyflakes==2.3.1
 pyparsing==2.4.7
 pytest==6.2.5
+python-docx==0.8.11
 regex==2021.9.24
 snowballstemmer==2.1.0
 toml==0.10.2
