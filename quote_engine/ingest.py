@@ -27,6 +27,16 @@ class IngestInterface(ABC):
         """Parse a file to a list of quotes."""
         pass
 
+    @classmethod
+    def raise_if_invalid_file_type(cls, path: str):
+        if not cls.can_ingest(path):
+            raise FileExtensionNotAllowed(
+                (
+                    f"Can only open files of type {cls.allowed_extensions},"
+                    f"got {path}"
+                )
+            )
+
 
 class TxtFileIngest(IngestInterface):
     """Ingest a txt file."""
@@ -43,13 +53,7 @@ class TxtFileIngest(IngestInterface):
         """
         quotes: List[Quote] = []
 
-        if not cls.can_ingest(path):
-            raise FileExtensionNotAllowed(
-                (
-                    f"Can only open files of type {cls.allowed_extensions},"
-                    f"got {path}"
-                )
-            )
+        cls.raise_if_invalid_file_type(path)
         with open(path, mode="r") as file:
             for line in file:
                 if "-" in line:
@@ -70,13 +74,7 @@ class CsvFileIngest(IngestInterface):
     @classmethod
     def parse(cls, path: str) -> List[Quote]:
         """Parse a csv file."""
-        if not cls.can_ingest(path):
-            raise FileExtensionNotAllowed(
-                (
-                    f"Can only open files of type {cls.allowed_extensions},"
-                    f"got {path}"
-                )
-            )
+        cls.raise_if_invalid_file_type(path)
         with open(path, "r") as file:
             return [
                 Quote(row["author"], row["body"])
@@ -92,13 +90,7 @@ class DocxFileIngest(IngestInterface):
     @classmethod
     def parse(cls, path: str) -> List[Quote]:
         """Parse a docx file."""
-        if not cls.can_ingest(path):
-            raise FileExtensionNotAllowed(
-                (
-                    f"Can only open files of type {cls.allowed_extensions},"
-                    f"got {path}"
-                )
-            )
+        cls.raise_if_invalid_file_type(path)
         quotes = []
         for paragraph in docx.Document(path).paragraphs:
             if paragraph.text != "":
@@ -111,19 +103,16 @@ class DocxFileIngest(IngestInterface):
 
 
 class PdfFileIngest(IngestInterface):
+    """Ingest a pdf file."""
+
     allowed_extensions = [".pdf"]
     temporary_text_file_path = "temp.txt"
     pdf_cli_tool = "pdftotext"
 
     @classmethod
     def parse(cls, path: str) -> List[Quote]:
-        if not cls.can_ingest(path):
-            raise FileExtensionNotAllowed(
-                (
-                    f"Can only open files of type {cls.allowed_extensions},"
-                    f"got {path}"
-                )
-            )
+        """Parse a pdf file."""
+        cls.raise_if_invalid_file_type(path)
         subprocess.run(
             [cls.pdf_cli_tool, "-layout", path, cls.temporary_text_file_path],
             capture_output=True,
@@ -133,6 +122,6 @@ class PdfFileIngest(IngestInterface):
 
 
 class FileExtensionNotAllowed(Exception):
-    """Throw when the file extensions is not supported."""
+    """Throw when the file extension is not supported."""
 
     pass
