@@ -121,7 +121,31 @@ class PdfFileIngest(IngestInterface):
         return TxtFileIngest.parse(cls.temporary_text_file_path, '"\n')
 
 
+class Ingestor(IngestInterface):
+    @classmethod
+    def parse(cls, path: str) -> List[Quote]:
+        if DocxFileIngest.can_ingest(path):
+            return DocxFileIngest.parse(path)
+        if CsvFileIngest.can_ingest(path):
+            return CsvFileIngest.parse(path)
+        if TxtFileIngest.can_ingest(path):
+            return TxtFileIngest.parse(path)
+        if PdfFileIngest.can_ingest(path):
+            return PdfFileIngest.parse(path)
+        raise UnsupportedFileType()
+
+
 class FileExtensionNotAllowed(Exception):
-    """Throw when the file extension is not supported."""
+    """Throw when the file extension is not allowed."""
+
+    pass
+
+
+class UnsupportedFileType(Exception):
+    """Throw when the file extension is not supported.
+
+    This happens when the strategy for finding a file
+    ingest class is exhausted.
+    """
 
     pass

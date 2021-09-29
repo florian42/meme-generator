@@ -1,9 +1,10 @@
 from collections import Counter
+from unittest.mock import Mock
 
 import pytest
 
 from .ingest import (CsvFileIngest, DocxFileIngest, FileExtensionNotAllowed,
-                     PdfFileIngest, TxtFileIngest)
+                     Ingestor, PdfFileIngest, TxtFileIngest)
 from .quote_model import Quote
 
 
