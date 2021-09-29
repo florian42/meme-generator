@@ -7,7 +7,7 @@ from typing import List
 
 import docx
 
-from .quote_model import Quote
+from .quote_model import QuoteMode
 
 
 class IngestInterface(ABC):
@@ -23,7 +23,7 @@ class IngestInterface(ABC):
 
     @classmethod
     @abstractmethod
-    def parse(cls, path: str) -> List[Quote]:
+    def parse(cls, path: str) -> List[QuoteMode]:
         """Parse a file to a list of quotes."""
         pass
 
@@ -46,12 +46,12 @@ class TxtFileIngest(IngestInterface):
     @classmethod
     def parse(
         cls, path: str, character_to_remove: str = "\n\ufeff"
-    ) -> List[Quote]:
+    ) -> List[QuoteMode]:
         """Parse a txt file.
 
         It strips bad characters except '...'.
         """
-        quotes: List[Quote] = []
+        quotes: List[QuoteMode] = []
 
         cls.raise_if_invalid_file_type(path)
         with open(path, mode="r") as file:
@@ -62,7 +62,7 @@ class TxtFileIngest(IngestInterface):
                         .replace('"', "")
                         .split(" - ")
                     )
-                    quotes.append(Quote(author, quote))
+                    quotes.append(QuoteMode(author, quote))
         return quotes
 
 
@@ -72,12 +72,12 @@ class CsvFileIngest(IngestInterface):
     allowed_extensions = [".csv"]
 
     @classmethod
-    def parse(cls, path: str) -> List[Quote]:
+    def parse(cls, path: str) -> List[QuoteMode]:
         """Parse a csv file."""
         cls.raise_if_invalid_file_type(path)
         with open(path, "r") as file:
             return [
-                Quote(row["author"], row["body"])
+                QuoteMode(row["author"], row["body"])
                 for row in csv.DictReader(file)
             ]
 
@@ -88,7 +88,7 @@ class DocxFileIngest(IngestInterface):
     allowed_extensions = [".docx"]
 
     @classmethod
-    def parse(cls, path: str) -> List[Quote]:
+    def parse(cls, path: str) -> List[QuoteMode]:
         """Parse a docx file."""
         cls.raise_if_invalid_file_type(path)
         quotes = []
@@ -96,7 +96,9 @@ class DocxFileIngest(IngestInterface):
             if paragraph.text != "":
                 parsed_paragraph = paragraph.text.split(" - ")
                 quotes.append(
-                    Quote(parsed_paragraph[1], parsed_paragraph[0].strip('"'))
+                    QuoteMode(
+                        parsed_paragraph[1], parsed_paragraph[0].strip('"')
+                    )
                 )
 
         return quotes
@@ -110,7 +112,7 @@ class PdfFileIngest(IngestInterface):
     pdf_cli_tool = "pdftotext"
 
     @classmethod
-    def parse(cls, path: str) -> List[Quote]:
+    def parse(cls, path: str) -> List[QuoteMode]:
         """Parse a pdf file."""
         cls.raise_if_invalid_file_type(path)
         subprocess.run(
@@ -123,7 +125,7 @@ class PdfFileIngest(IngestInterface):
 
 class Ingestor(IngestInterface):
     @classmethod
-    def parse(cls, path: str) -> List[Quote]:
+    def parse(cls, path: str) -> List[QuoteMode]:
         if DocxFileIngest.can_ingest(path):
             return DocxFileIngest.parse(path)
         if CsvFileIngest.can_ingest(path):
