@@ -1,10 +1,10 @@
+import os
 from collections import Counter
-from unittest.mock import Mock
 
 import pytest
 
 from .ingest import (CsvFileIngest, DocxFileIngest, FileExtensionNotAllowed,
-                     Ingestor, PdfFileIngest, TxtFileIngest)
+                     PdfFileIngest, TxtFileIngest)
 from .quote_model import QuoteMode
 
 
@@ -82,6 +82,7 @@ class TestPdfFileIngest:
                 ),
             ]
         )
+        assert os.path.isfile(PdfFileIngest.temporary_text_file_path) is False
 
     def test_does_not_open_other_files(self) -> None:
         with pytest.raises(FileExtensionNotAllowed):

@@ -120,7 +120,9 @@ class PdfFileIngest(IngestInterface):
             capture_output=True,
             check=True,
         )
-        return TxtFileIngest.parse(cls.temporary_text_file_path, '"\n')
+        quotes = TxtFileIngest.parse(cls.temporary_text_file_path, '"\n')
+        os.remove(cls.temporary_text_file_path)
+        return quotes
 
 
 class Ingestor(IngestInterface):
