@@ -3,8 +3,8 @@ from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
-class QuoteMode:
-    """Class QuoteMode represents quotes from authors.
+class QuoteModel:
+    """Class QuoteModel represents quotes from authors.
 
     A quote can only contain one line and one author.
     """

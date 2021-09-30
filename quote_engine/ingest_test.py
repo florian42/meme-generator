@@ -5,7 +5,7 @@ import pytest
 
 from .ingest import (CsvFileIngest, DocxFileIngest, FileExtensionNotAllowed,
                      PdfFileIngest, TxtFileIngest)
-from .quote_model import QuoteMode
+from .quote_model import QuoteModel
 
 
 class TestTxtFileIngest:
@@ -15,8 +15,8 @@ class TestTxtFileIngest:
         )
         assert Counter(actual_quotes) == Counter(
             [
-                QuoteMode(author="Bork", line="To bork or not to bork"),
-                QuoteMode(author="Stinky", line="He who smelt it..."),
+                QuoteModel(author="Bork", line="To bork or not to bork"),
+                QuoteModel(author="Stinky", line="He who smelt it..."),
             ]
         )
 
@@ -32,8 +32,8 @@ class TestCsvFileIngest:
         )
         assert Counter(actual_quotes) == Counter(
             [
-                QuoteMode(author="Skittle", line="Chase the mailman"),
-                QuoteMode(
+                QuoteModel(author="Skittle", line="Chase the mailman"),
+                QuoteModel(
                     author="Mr. Paws", line="When in doubt, go shoe-shopping"
                 ),
             ]
@@ -51,12 +51,12 @@ class TestDocxFileIngest:
         )
         assert Counter(actual_quotes) == Counter(
             [
-                QuoteMode(author="Rex", line="Bark like no one’s listening"),
-                QuoteMode(author="Chewy", line="RAWRGWAWGGR"),
-                QuoteMode(
+                QuoteModel(author="Rex", line="Bark like no one’s listening"),
+                QuoteModel(author="Chewy", line="RAWRGWAWGGR"),
+                QuoteModel(
                     author="Peanut", line="Life is like peanut butter: crunchy"
                 ),
-                QuoteMode(author="Tiny", line="Channel your inner husky"),
+                QuoteModel(author="Tiny", line="Channel your inner husky"),
             ]
         )
 
@@ -72,11 +72,11 @@ class TestPdfFileIngest:
         )
         assert Counter(actual_quotes) == Counter(
             [
-                QuoteMode(author="Fluffles", line="Treat yo self"),
-                QuoteMode(
+                QuoteModel(author="Fluffles", line="Treat yo self"),
+                QuoteModel(
                     author="Forrest Pup", line="Life is like a box of treats"
                 ),
-                QuoteMode(
+                QuoteModel(
                     author="Bark Twain",
                     line="It's the size of the fight in the dog",
                 ),
