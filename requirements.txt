@@ -8,8 +8,12 @@ lxml==4.6.3
 mccabe==0.6.1
 mypy==0.910
 mypy-extensions==0.4.3
+numpy==1.21.2
 packaging==21.0
+pandas==1.3.3
+pandas-stubs==1.2.0.17
 pathspec==0.9.0
+Pillow==8.3.2
 platformdirs==2.4.0
 pluggy==1.0.0
 py==1.10.0
@@ -18,8 +22,11 @@ pydocstyle==6.1.1
 pyflakes==2.3.1
 pyparsing==2.4.7
 pytest==6.2.5
+python-dateutil==2.8.2
 python-docx==0.8.11
+pytz==2021.1
 regex==2021.9.24
+six==1.16.0
 snowballstemmer==2.1.0
 toml==0.10.2
 tomli==1.2.1
@@ -27,6 +34,7 @@ types-click==7.1.5
 types-Flask==1.1.3
 types-Jinja2==2.11.6
 types-MarkupSafe==1.1.6
+types-Pillow==8.3.4
 types-requests==2.25.9
 types-Werkzeug==1.0.5
 typing-extensions==3.10.0.2
