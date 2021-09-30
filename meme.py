@@ -1,15 +1,26 @@
+"""Main entrypoint for interfacing with meme-generator via cli."""
 import argparse
 import os
 import random
+from typing import Optional
 
-# @TODO Import your Ingestor and MemeEngine classes
 from meme_engine import MemeGenerator
 from quote_engine.ingest import Ingestor
 from quote_engine.quote_model import QuoteModel
 
 
-def generate_meme(path=None, body=None, author=None):
-    """Generate a meme given an path and a quote"""
+def generate_meme(
+    body: str,
+    author: str,
+    path: Optional[str] = None,
+):
+    """Generate a meme given an path and a quote.
+
+    arguments:
+        path -- path to file that will be ingested
+        body -- quote to write on image
+        author -- author of quote
+    """
     img = None
     quote = None
 
@@ -21,7 +32,7 @@ def generate_meme(path=None, body=None, author=None):
 
         img = random.choice(imgs)
     else:
-        img = path[0]
+        img = path
 
     if body is None:
         quote_files = [
@@ -59,4 +70,4 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    print(generate_meme(args.path, args.body, args.author))
+    print(generate_meme(args.body, args.author, args.path))

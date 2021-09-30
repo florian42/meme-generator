@@ -9,14 +9,19 @@ DEFAULT_FONT = "OpenSans-Medium.ttf"
 
 
 class MemeGenerator:
+    """Generates a Meme through the `make_meme` method."""
+
     def __init__(self, output_dir: Optional[str] = None):
-        self._temporary_folder = output_dir or "./temp"
+        """Initialize MemeGenerator with optional output dir.
+
+        The default output dir is `temp` relative to where `meme.py` is executed.
+        """
+        self._temporary_folder = str(Path(output_dir).parent) or "./temp"
 
     def make_meme(
         self, img_path: str, text: str, author: str, width: Optional[int] = 500
     ) -> str:
-        """Creates a meme and returns the path to the generated image."""
-
+        """Create a meme and returns the path to the generated image."""
         image = Image.open(img_path)
         ratio = width / float(image.size[0])
         height = int(ratio * float(image.size[1]))
