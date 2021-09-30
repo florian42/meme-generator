@@ -5,10 +5,12 @@ from typing import Optional
 
 from PIL import Image, ImageDraw, ImageFont
 
+DEFAULT_FONT = "OpenSans-Medium.ttf"
+
 
 class MemeGenerator:
-    def __init__(self, output_dir):
-        self._temporary_folder = output_dir
+    def __init__(self, output_dir: Optional[str] = None):
+        self._temporary_folder = output_dir or "./temp"
 
     def make_meme(
         self, img_path: str, text: str, author: str, width: Optional[int] = 500
@@ -21,8 +23,9 @@ class MemeGenerator:
         resized_image = image.resize((width, height), Image.NEAREST)
 
         draw = ImageDraw.Draw(resized_image)
-        draw.text((10, 30), f'"{text}" - {author}', fill="white")
+        font = ImageFont.truetype(DEFAULT_FONT, size=44)
+        draw.text((40, 40), f'"{text}" - {author}', fill="white", font=font)
 
-        output_path = Path(f"{self._temporary_folder}/{uuid.uuid4()}")
+        output_path = Path(f"{self._temporary_folder}/{uuid.uuid4()}.jpg")
         resized_image.save(output_path)
         return str(output_path)

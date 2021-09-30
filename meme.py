@@ -49,10 +49,13 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Create a Meme.")
     parser.add_argument("-path", type=str, help="path to an image file")
     parser.add_argument(
-        "-body", type=str, help="quote body to add to the image"
+        "-body", type=str, help="quote body to add to the image", required=True
     )
     parser.add_argument(
-        "-author", type=str, help="quote author to add to the image"
+        "-author",
+        type=str,
+        help="quote author to add to the image",
+        required=True,
     )
 
     args = parser.parse_args()
