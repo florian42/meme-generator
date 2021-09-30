@@ -3,8 +3,9 @@ from collections import Counter
 
 import pytest
 
-from .ingest import (CsvFileIngest, DocxFileIngest, FileExtensionNotAllowed,
-                     PdfFileIngest, TxtFileIngest)
+from .ingest import (CsvFileIngest, DocxFileIngest,
+                     FileExtensionNotAllowedError, PdfFileIngest,
+                     TxtFileIngest)
 from .quote_model import QuoteModel
 
 
@@ -21,7 +22,7 @@ class TestTxtFileIngest:
         )
 
     def test_does_not_open_other_files(self) -> None:
-        with pytest.raises(FileExtensionNotAllowed):
+        with pytest.raises(FileExtensionNotAllowedError):
             TxtFileIngest.parse("../_data/DogQuotes/DogQuotesTXT.pdf")
 
 
@@ -40,7 +41,7 @@ class TestCsvFileIngest:
         )
 
     def test_does_not_open_other_files(self) -> None:
-        with pytest.raises(FileExtensionNotAllowed):
+        with pytest.raises(FileExtensionNotAllowedError):
             CsvFileIngest.parse("../_data/DogQuotes/DogQuotesTXT.pdf")
 
 
@@ -61,7 +62,7 @@ class TestDocxFileIngest:
         )
 
     def test_does_not_open_other_files(self) -> None:
-        with pytest.raises(FileExtensionNotAllowed):
+        with pytest.raises(FileExtensionNotAllowedError):
             DocxFileIngest.parse("../_data/DogQuotes/DogQuotesTXT.pdf")
 
 
@@ -85,5 +86,5 @@ class TestPdfFileIngest:
         assert os.path.isfile(PdfFileIngest.temporary_text_file_path) is False
 
     def test_does_not_open_other_files(self) -> None:
-        with pytest.raises(FileExtensionNotAllowed):
+        with pytest.raises(FileExtensionNotAllowedError):
             PdfFileIngest.parse("../_data/DogQuotes/DogQuotesTXT.txt")

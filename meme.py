@@ -5,12 +5,14 @@ import random
 from typing import Optional
 
 from meme_engine import MemeGenerator
-from quote_engine.ingest import Ingestor
+from quote_engine.ingest import Ingestor, UnsupportedFileTypeError
 from quote_engine.quote_model import QuoteModel
+
+MAXIMUM_QUOTE_LENGTH = 11
 
 
 def generate_meme(
-    body: str,
+    body: Optional[str],
     author: str,
     path: Optional[str] = None,
 ) -> str:
@@ -21,8 +23,6 @@ def generate_meme(
         body -- quote to write on image
         author -- author of quote
     """
-    img = None
-    quote = None
 
     if path is None:
         images = "./_data/photos/dog/"
@@ -47,27 +47,43 @@ def generate_meme(
 
         quote = random.choice(quotes)
     elif author is None:
-        raise Exception("Author Required if Body is Used")
+        raise AuthorRequiredError("Author Required if Body is Used")
     else:
         quote = QuoteModel(author, body)
 
     meme = MemeGenerator(path)
     path = meme.make_meme(img, quote.line, quote.author)
+
     return path
+
+
+class AuthorRequiredError(Exception):
+    """Raise if an author needs to be specified."""
+
+    pass
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Create a Meme.")
     parser.add_argument("-path", type=str, help="path to an image file")
     parser.add_argument(
-        "-body", type=str, help="quote body to add to the image", required=True
+        "-body", type=str, help="quote body to add to the image"
     )
     parser.add_argument(
         "-author",
         type=str,
         help="quote author to add to the image",
-        required=True,
     )
 
     args = parser.parse_args()
-    print(generate_meme(args.body, args.author, args.path))
+    try:
+        if path := generate_meme(args.body, args.author, args.path):
+            print(path)
+    except IsADirectoryError:
+        print("You must specify the path to an image file!")
+    except UnsupportedFileTypeError as error:
+        print(error)
+    except AuthorRequiredError:
+        print("You need to specify an Author if you use the -body option.")
+    except Exception as error:
+        print(f"Got an unexpected error: {error}")

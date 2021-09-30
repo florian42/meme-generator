@@ -1,4 +1,5 @@
 """Loads, resizes and adds a caption to an image."""
+import os
 import uuid
 from pathlib import Path
 from typing import Optional
@@ -31,9 +32,13 @@ class MemeGenerator:
         resized_image = image.resize((width, height), Image.NEAREST)
 
         draw = ImageDraw.Draw(resized_image)
-        font = ImageFont.truetype(DEFAULT_FONT, size=44)
-        draw.text((40, 40), f'"{text}" - {author}', fill="white", font=font)
+        font = ImageFont.truetype(DEFAULT_FONT, size=30)
+        draw.text((40, 40), f'"{text}" \n- {author}', fill="white", font=font)
 
         output_path = Path(f"{self._temporary_folder}/{uuid.uuid4()}.jpg")
-        resized_image.save(output_path)
+        try:
+            resized_image.save(output_path)
+        except FileNotFoundError:
+            os.mkdir(output_path.parent)
+            resized_image.save(output_path)
         return str(output_path)

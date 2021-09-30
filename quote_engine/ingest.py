@@ -8,9 +8,9 @@ DocxFileIngest -- Class to ingest .docx files using pydocx
 PdfFileIngest -- Class to ingest .pdf files by invoking xpdf from environment
 Ingestor -- Class to that selected a suitable file ingest and returns
 the result
-FileExtensionNotAllowed -- Exception that is raised if a module tries to
+FileExtensionNotAllowedError -- Exception that is raised if a module tries to
 ingest an unsupported file
-UnsupportedFileType -- Exception that is raised when no suitable file
+UnsupportedFileTypeError -- Exception that is raised when no suitable file
 ingest could be selected
 """
 import os
@@ -49,7 +49,7 @@ class IngestInterface(ABC):
         path -- path to file that will be ingested
         """
         if not cls.can_ingest(path):
-            raise FileExtensionNotAllowed(
+            raise FileExtensionNotAllowedError(
                 (
                     f"Can only open files of type {cls.allowed_extensions},"
                     f"got {path}"
@@ -162,16 +162,16 @@ class Ingestor(IngestInterface):
             return TxtFileIngest.parse(path)
         if PdfFileIngest.can_ingest(path):
             return PdfFileIngest.parse(path)
-        raise UnsupportedFileType()
+        raise UnsupportedFileTypeError(f"Cannot Ingest files with type {path}")
 
 
-class FileExtensionNotAllowed(Exception):
+class FileExtensionNotAllowedError(Exception):
     """Throw when the file extension is not allowed."""
 
     pass
 
 
-class UnsupportedFileType(Exception):
+class UnsupportedFileTypeError(Exception):
     """Throw when the file extension is not supported.
 
     This happens when the strategy for finding a file
