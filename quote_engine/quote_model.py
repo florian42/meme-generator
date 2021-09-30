@@ -12,6 +12,6 @@ class QuoteModel:
     author: str
     line: str
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Return a human-readable string representation."""
         return f'"{self.line}" - {self.author}'

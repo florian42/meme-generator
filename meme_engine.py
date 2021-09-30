@@ -14,12 +14,15 @@ class MemeGenerator:
     def __init__(self, output_dir: Optional[str] = None):
         """Initialize MemeGenerator with optional output dir.
 
-        The default output dir is `temp` relative to where `meme.py` is executed.
+        The default output dir is `temp` relative to where
+         `meme.py` is executed.
         """
-        self._temporary_folder = str(Path(output_dir).parent) or "./temp"
+        self._temporary_folder = (
+            str(Path(output_dir).parent) if output_dir else "./temp"
+        )
 
     def make_meme(
-        self, img_path: str, text: str, author: str, width: Optional[int] = 500
+        self, img_path: str, text: str, author: str, width: int = 500
     ) -> str:
         """Create a meme and returns the path to the generated image."""
         image = Image.open(img_path)

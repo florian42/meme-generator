@@ -13,7 +13,7 @@ def generate_meme(
     body: str,
     author: str,
     path: Optional[str] = None,
-):
+) -> str:
     """Generate a meme given an path and a quote.
 
     arguments:

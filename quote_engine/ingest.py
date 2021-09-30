@@ -6,11 +6,13 @@ TxtFileIngest -- Class to ingest .txt files
 CsvFileIngest -- Class to ingest .csv files using pandas
 DocxFileIngest -- Class to ingest .docx files using pydocx
 PdfFileIngest -- Class to ingest .pdf files by invoking xpdf from environment
-Ingestor -- Class to that selected a suitable file ingest and returns the result
-FileExtensionNotAllowed -- Exception that is raised if a module tries to ingest an unsupported file
-UnsupportedFileType -- Exception that is raised when no suitable file ingest could be selected
+Ingestor -- Class to that selected a suitable file ingest and returns
+the result
+FileExtensionNotAllowed -- Exception that is raised if a module tries to
+ingest an unsupported file
+UnsupportedFileType -- Exception that is raised when no suitable file
+ingest could be selected
 """
-import csv
 import os
 import subprocess
 from abc import ABC, abstractmethod
@@ -40,7 +42,7 @@ class IngestInterface(ABC):
         pass
 
     @classmethod
-    def raise_for_unsupported_file_type(cls, path: str):
+    def raise_for_unsupported_file_type(cls, path: str) -> None:
         """Raise an exception if the file type is not supported.
 
         arguments:
@@ -145,7 +147,8 @@ class Ingestor(IngestInterface):
     """Parse different file types.
 
     Public Methods:
-    parse -- Given a path to a file parse its contents to a list of `QuoteModel`.
+    parse -- Given a path to a file parse its contents
+    to a list of `QuoteModel`.
     """
 
     @classmethod
