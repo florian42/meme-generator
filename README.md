@@ -28,3 +28,30 @@ This project is meant to showcase:
 ### Run
 
 - You can use the cli, e.g.: `$ python meme.py -body 123 -author me`
+- You can start the web app using: `$ python app.py`
+
+## Structure
+
+- meme.py: Main entrypoint for interfacing with meme-generator via cli. Usage: `$ python meme.py -body 123 -author me`
+- meme_engine.py: Loads, resizes and adds a caption to an image. Usage:
+```python
+   meme = MemeGenerator(path)
+   path = meme.make_meme(img, quote.line, quote.author)
+```
+- appy.py: sets up web app to as user interface to meme generator. Useage: `$ python app.py`
+- stubs: stubs for type checking with mypy. Picked up automatically by mypy.
+- quote_engine: Contains Ingest Module and QuoteModel. Usage: `Ingestor.parse("./_data/photos/dog/xander_1.jpg")`
+
+## Dependencies
+
+- flask: framework for creating the web application to interface with the meme generator
+- mypy: used for type checking
+- requests: for making http requests
+- python-docx: to parse .docx files
+- flake8: linting
+- black: pep8 compliant formatting
+- pandas: parsing csv files
+- pillow: opening and editing images
+- pydocstyle: linting
+- pytest: write tests
+- 

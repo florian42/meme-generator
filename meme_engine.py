@@ -18,9 +18,7 @@ class MemeGenerator:
         The default output dir is `temp` relative to where
          `meme.py` is executed.
         """
-        self._temporary_folder = (
-            str(Path(output_dir).parent) if output_dir else "./temp"
-        )
+        self._temporary_folder = output_dir
 
     def make_meme(
         self, img_path: str, text: str, author: str, width: int = 500
@@ -42,3 +40,9 @@ class MemeGenerator:
             os.mkdir(output_path.parent)
             resized_image.save(output_path)
         return str(output_path)
+
+    def __str__(self) -> str:
+        """Return a human-readable string representation."""
+        return (
+            f'Meme Generator uses temporary folder: "{self._temporary_folder}"'
+        )

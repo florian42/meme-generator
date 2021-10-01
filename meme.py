@@ -2,6 +2,7 @@
 import argparse
 import os
 import random
+from pathlib import Path
 from typing import Optional
 
 from meme_engine import MemeGenerator
@@ -19,11 +20,10 @@ def generate_meme(
     """Generate a meme given an path and a quote.
 
     arguments:
-        path -- path to file that will be ingested
+        path -- path to image that will be used as meme background
         body -- quote to write on image
         author -- author of quote
     """
-
     if path is None:
         images = "./_data/photos/dog/"
         imgs = []
@@ -51,7 +51,7 @@ def generate_meme(
     else:
         quote = QuoteModel(author, body)
 
-    meme = MemeGenerator(path)
+    meme = MemeGenerator(str(Path(path).parent) if path else None)
     path = meme.make_meme(img, quote.line, quote.author)
 
     return path
