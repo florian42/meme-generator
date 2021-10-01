@@ -54,4 +54,3 @@ This project is meant to showcase:
 - pillow: opening and editing images
 - pydocstyle: linting
 - pytest: write tests
-- 
