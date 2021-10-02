@@ -3,9 +3,8 @@ from collections import Counter
 
 import pytest
 
-from .ingest import (CsvFileIngest, DocxFileIngest,
-                     FileExtensionNotAllowedError, PdfFileIngest,
-                     TxtFileIngest)
+from .exceptions import FileExtensionNotAllowedError
+from .ingest import CsvFileIngest, DocxFileIngest, PdfFileIngest, TxtFileIngest
 from .quote_model import QuoteModel
 
 

@@ -6,7 +6,8 @@ from pathlib import Path
 from typing import Optional
 
 from meme_engine import MemeGenerator
-from quote_engine.ingest import Ingestor, UnsupportedFileTypeError
+from quote_engine.exceptions import UnsupportedFileTypeError
+from quote_engine.ingest import Ingestor
 from quote_engine.quote_model import QuoteModel
 
 MAXIMUM_QUOTE_LENGTH = 11

@@ -21,6 +21,7 @@ from typing import List
 import docx
 import pandas
 
+from .exceptions import FileExtensionNotAllowedError, UnsupportedFileTypeError
 from .quote_model import QuoteModel
 
 
@@ -163,19 +164,3 @@ class Ingestor(IngestInterface):
         if PdfFileIngest.can_ingest(path):
             return PdfFileIngest.parse(path)
         raise UnsupportedFileTypeError(f"Cannot Ingest files with type {path}")
-
-
-class FileExtensionNotAllowedError(Exception):
-    """Throw when the file extension is not allowed."""
-
-    pass
-
-
-class UnsupportedFileTypeError(Exception):
-    """Throw when the file extension is not supported.
-
-    This happens when the strategy for finding a file
-    ingest class is exhausted.
-    """
-
-    pass
